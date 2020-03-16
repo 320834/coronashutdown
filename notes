@@ -1,0 +1,10 @@
+'Yauco|Puerto Rico':
+   { type: 'Feature',
+     properties:
+      { GEO_ID: '0500000US72153',
+        STATE: 'Puerto Rico',
+        COUNTY: 'Yauco',
+        NAME: 'Yauco',
+        LSAD: 'Muno',
+        CENSUSAREA: 68.192 },
+     geometry: { type: 'Polygon', coordinates: [Array] } } }
