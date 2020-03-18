@@ -1,7 +1,7 @@
 const fs = require("fs");
 const axios = require("axios");
 
-let rawCases = fs.readFileSync("data/cases.json");
+let rawCases = fs.readFileSync("data/us-cases.json");
 let rawCounties = fs.readFileSync("data/counties-new.json");
 
 let jsonCases = JSON.parse(rawCases);
@@ -9,17 +9,19 @@ let jsonCounties = JSON.parse(rawCounties);
 
 county_dict = {};
 
-function construct_dates() {
+function construct_dates(county_index) {
   let date_dict = {};
 
   let start_date = new Date("1/1/2020");
   let end_date = new Date();
 
-  var days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
+  let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
 
+  let millitime;
+  let dateObj;
   for (var i = 0; i < days; i++) {
-    let millitime = start_date.getTime() + 86400000 * i;
-    let dateObj = new Date(millitime);
+    millitime = start_date.getTime() + 86400000 * i;
+    dateObj = new Date(millitime);
 
     let date = "";
     let month = parseInt(dateObj.getMonth()) + 1;
@@ -38,6 +40,8 @@ function construct_dates() {
     let key = date + "." + month + "." + year;
     let value = 0;
     date_dict[key] = value;
+
+    jsonCounties["features"][county_index]["properties"][key] = 0;
   }
 
   return date_dict;
@@ -46,8 +50,10 @@ function construct_dates() {
 function construct_county_dict() {
   for (let i = 0; i < jsonCounties["features"].length; i++) {
     jsonCounties["features"][i]["properties"]["total_cases"] = 0;
-    jsonCounties["features"][i]["properties"]["date_ind"] = construct_dates();
-    jsonCounties["features"][i]["properties"]["date_cumul"] = construct_dates();
+    jsonCounties["features"][i]["properties"]["date_ind"] = construct_dates(i);
+    // construct_dates(i);
+    // jsonCounties["features"][i]["properties"]["date_cumul"] = construct_dates();
+    // construct_dates();
 
     let key =
       jsonCounties["features"][i]["properties"]["COUNTY"] +
@@ -71,59 +77,28 @@ function get_key_county_state(county, state) {
   return county + "|" + state;
 }
 
-async function append_county(res, caseObj) {
-  let key = get_key_county_state(
-    res["data"]["results"][0]["county_name"],
-    res["data"]["results"][0]["state_name"]
-  );
-  let date_confirmation = caseObj["properties"]["date_confirmation"];
+function append_county(caseObj) {
+  let key = get_key_county_state(caseObj["county"], caseObj["province"]);
+  let date_confirmation = caseObj["date_confirmation"];
 
   if (county_dict[key] !== undefined) {
     county_dict[key]["properties"]["total_cases"] += 1;
+    county_dict[key]["properties"][date_confirmation] += 1;
     county_dict[key]["properties"]["date_ind"][date_confirmation] += 1;
-    county_dict[key]["properties"]["date_cumul"][date_confirmation] += 1;
   } else {
     console.log(key);
   }
 }
 
-async function api_county_call(obj) {
-  let lat = obj["geometry"]["coordinates"][1];
-  let lon = obj["geometry"]["coordinates"][0];
+function merge_county_cases() {
+  for (let i = 0; i < jsonCases.length; i++) {
+    append_county(jsonCases[i]);
 
-  if (lat !== undefined || lon !== undefined) {
-    axios
-      .get(
-        "https://geo.fcc.gov/api/census/area?lat=" +
-          lat +
-          "&lon=" +
-          lon +
-          "&format=json"
-      )
-      .then(function(res) {
-        //console.log(res["data"]["results"][0]["county_name"] + "|" + res["data"]["results"][0]["state_name"])
-        append_county(res, obj);
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-  }
-}
-
-async function merge_county_cases() {
-  for (let i = 0; i < jsonCases["features"].length; i++) {
-    // let obj = jsonCases["features"][i];
-
-    //Check if in united states
-    //Do api call to figure out county state
-    //Add to total_cases
-    //Add to date_ind and date_cum
-
-    if (jsonCases["features"][i]["properties"]["country"] === "United States") {
-      await api_county_call(jsonCases["features"][i]);
-    } else {
-      //Do nothing. We don't care about anyone else lol. jk. might implement for other countries later
-    }
+    // if (jsonCases["features"][i]["properties"]["country"] === "United States") {
+    //   await api_county_call(jsonCases["features"][i]);
+    // } else {
+    //   //Do nothing. We don't care about anyone else lol. jk. might implement for other countries later
+    // }
   }
 }
 
@@ -142,17 +117,65 @@ function write_file() {
   let data = JSON.stringify(jsonWrite);
 
   fs.writeFileSync("data/counties-cases.json", data);
+  fs.writeFileSync("final_data/counties-cases.geojson", data);
 }
 
 function construct_cumulative() {
   for (let [key, value] of Object.entries(county_dict)) {
     let cumulative_count = 0;
 
-    for (let [date, count] of Object.entries(
-      value["properties"]["date_cumul"]
-    )) {
-      cumulative_count += count;
-      value["properties"]["date_cumul"][date] = cumulative_count;
+    // for (let [date, count] of Object.entries(
+    //   value["properties"]["date_cumul"]
+    // )) {
+    //   cumulative_count += count;
+    //   value["properties"]["date_cumul"][date] = cumulative_count;
+    // }
+
+    let start_date = new Date("01/01/2020");
+    let end_date = new Date();
+
+    let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
+
+    for (let i = 0; i < days; i++) {
+      let millitime = start_date.getTime() + 86400000 * i;
+      // let millitimeYes = start_date.getTime() + 86400000 * (i - 1);
+
+      let dateObj = new Date(millitime);
+      // let dateObjYes = new Date(millitimeYes);
+
+      let date = "";
+      let month = parseInt(dateObj.getMonth()) + 1;
+      let year = dateObj.getFullYear();
+
+      // let dateYes = "";
+      // let monthYes = parseInt(dateObjYes.getMonth()) + 1;
+      // let yearYes = dateObjYes.getFullYear();
+
+      if (parseInt(dateObj.getDate()) < 10) {
+        date = "0" + dateObj.getDate();
+      } else {
+        date = dateObj.getDate();
+      }
+
+      // if (parseInt(dateObjYes.getDate()) < 10) {
+      //   dateYes = "0" + dateObjYes.getDate();
+      // } else {
+      //   dateYes = dateObjYes.getDate();
+      // }
+
+      if (month < 10) {
+        month = "0" + month;
+      }
+
+      // if (monthYes < 10) {
+      //   monthYes = "0" + monthYes;
+      // }
+
+      let displayDate = date + "." + month + "." + year;
+      // let displayDateYes = dateYes + "." + monthYes + "." + yearYes;
+
+      cumulative_count += value["properties"][displayDate];
+      value["properties"][displayDate] = cumulative_count;
     }
   }
 }
@@ -162,12 +185,9 @@ function main() {
 
   merge_county_cases();
 
-  setTimeout(function() {
-    construct_cumulative();
+  construct_cumulative();
 
-    write_file();
-    // console.log(county_dict["Bergen|New Jersey"])
-  }, 15000);
+  write_file();
 }
 
 main();

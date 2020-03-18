@@ -21,7 +21,7 @@ function construct_state() {
 }
 
 function map_county_state() {
-  var features = [];
+  // var features = [];
   for (var i = 0; i < jsonCounty["features"].length; i++) {
     let state_name =
       state_dict[jsonCounty["features"][i]["properties"]["STATE"]];
@@ -32,16 +32,16 @@ function map_county_state() {
 
     jsonCounty["features"][i]["properties"]["COUNTY"] = county_name;
 
-    if (state_name === "Puerto Rico") {
-    } else {
-      features.push(jsonCounty["features"][i]);
-    }
+    // if (state_name === "Puerto Rico") {
+    // } else {
+    //   features.push(jsonCounty["features"][i]);
+    // }
   }
 
-  jsonCounty = {
-    type: "FeatureCollection",
-    features: features
-  };
+  // jsonCounty = {
+  //   type: "FeatureCollection",
+  //   features: features
+  // };
 }
 
 function write_data() {
