@@ -4,7 +4,7 @@ const csv = require("csvtojson/v2");
 
 axios
   .get(
-    "https://raw.githubusercontent.com/beoutbreakprepared/nCoV2019/master/dataset_archive/outside_Hubei.data.17032020T011056.csv"
+    "https://raw.githubusercontent.com/beoutbreakprepared/nCoV2019/master/latest_data/outside_Hubei.data.18032020T013142.csv"
   )
   .then(function(res) {
     fs.writeFileSync("../data/cases.csv", res.data);

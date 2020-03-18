@@ -13,7 +13,7 @@ function construct_dates(county_index) {
   let date_dict = {};
 
   let start_date = new Date("1/1/2020");
-  let end_date = new Date();
+  let end_date = new Date(new Date().getTime() + 86400000 * 2);
 
   let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
 
@@ -74,6 +74,15 @@ function get_key_county_state(county, state) {
     county = "St. Louis";
   }
 
+  if (county === "Baltimore City") {
+    county = "Baltimore";
+  }
+
+  if (state === "Washington DC") {
+    county = "District of Columbia";
+    state = "District of Columbia";
+  }
+
   return county + "|" + state;
 }
 
@@ -132,7 +141,7 @@ function construct_cumulative() {
     // }
 
     let start_date = new Date("01/01/2020");
-    let end_date = new Date();
+    let end_date = new Date(new Date().getTime() + 86400000 * 2);
 
     let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
 

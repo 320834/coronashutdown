@@ -26,7 +26,7 @@ function add_US_list() {
 
 function build_visited_list() {
   for (let i = 0; i < jsonUS.length; i++) {
-    visited_us_cases_dict[jsonUS[i]["ID"]] = jsonUS[i];
+    visited_us_cases_dict[jsonUS[i]["ID"] + ""] = jsonUS[i];
   }
 }
 
@@ -74,6 +74,7 @@ function get_county_loop() {
       //Check if county is there
       if (visited_us_cases_dict[US_list[i]["ID"] + ""]["county"] == "") {
         if (lat === "" || lon === "") {
+          console.log("Already in US: " + US_list[i]["city"]);
           US_list[i]["county"] = get_county(US_list[i]["city"]);
         } else {
           api_call(lat, lon, i);
@@ -110,6 +111,8 @@ function write_file_us_cases() {
 }
 
 build_visited_list();
+
+// console.log(visited_us_cases_dict);
 
 add_US_list();
 
