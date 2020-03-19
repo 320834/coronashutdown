@@ -85,10 +85,6 @@ async function scrape_page(driver)
         index++;
     }
     
-    
-
-    // await driver.actions()
-    
     driver.quit();
 })();
 
