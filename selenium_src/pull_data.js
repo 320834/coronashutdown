@@ -13,6 +13,8 @@ let dict_visited_cases = {};
 
 let visited_count = 0;
 
+let time_start = new Date();
+
 function construct_dict_visited_cases()
 {
     for(let i = 0; i < json_visited_cases.length; i++)
@@ -131,6 +133,8 @@ async function scrape_page(driver)
         loop_status = await driver.findElement(By.className(" ant-pagination-next")).getAttribute("aria-disabled") === "false"
     }
     
+    console.log("Finish Pulling. Time End" + new Date())
+    console.log("Time elapsed: " + new Date() - time_start + " millseconds");
     driver.quit();
 })();
 
