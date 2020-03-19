@@ -2,9 +2,27 @@ const {Builder, By, Key, until} = require('selenium-webdriver');
 const webdriver = require('selenium-webdriver');
 let fs = require("fs");
 
+let rawCases = fs.readFileSync("../selenium_data/us-cases-1point3acres.json");
+let json_visited_cases = JSON.parse(rawCases);
+
 let link = "https://coronavirus.1point3acres.com/en";
 
 let list_cases = [];
+
+let dict_visited_cases = {};
+
+let visited_count = 0;
+
+function construct_dict_visited_cases()
+{
+    for(let i = 0; i < json_visited_cases.length; i++)
+    {
+        let obj = json_visited_cases[i];
+        let key = obj["cases"] + obj["date"] + obj["state"] + obj["county"];
+
+        dict_visited_cases[key] = true;
+    }
+} 
 
 async function write_file()
 {
@@ -63,26 +81,54 @@ async function scrape_page(driver)
             }
         }
 
-        list_cases.push(case_obj)
+        // let key = case_obj["cases"] + case_obj["date"] + case_obj["state"] + case_obj["county"];
+        // if(dict_visited_cases[key] !== undefined)
+        // {
+        //     //Already in list, no need to add to list_cases
+        //     visited_count += 1;
+        //     console.log("Visited " + visited_count)
+        // }
+        // else
+        // {
+            
+        // }
+
+        list_cases.unshift(case_obj)
+        console.log("Add new " + case_obj["cases"]);
+        
 
     }
 }
 
 (async function main(){
+
+    // list_cases = json_visited_cases;
+    // construct_dict_visited_cases();
+
+
+
     let driver = new webdriver.Builder().forBrowser('firefox').build();
     await driver.get(link)
-    // await scrape_page(driver);
 
     let index = 0;
     await driver.executeScript("window.scrollTo(0,4000)", "")
 
-    while(await driver.findElement(By.className(" ant-pagination-next")).getAttribute("aria-disabled") === "false")
+    let loop_status = await driver.findElement(By.className(" ant-pagination-next")).getAttribute("aria-disabled") === "false"
+
+    while(loop_status)
     {
         await scrape_page(driver);
         await driver.findElement(By.className(" ant-pagination-next")).click();
         write_file();
-        console.log(index);
+        console.log("Page " + index);
         index++;
+
+        // if(visited_count >= 15)
+        // {
+        //     driver.quit();
+        // }
+
+        loop_status = await driver.findElement(By.className(" ant-pagination-next")).getAttribute("aria-disabled") === "false"
     }
     
     driver.quit();
