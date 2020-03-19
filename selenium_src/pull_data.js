@@ -139,7 +139,7 @@ async function scrape_page(driver)
     }
     
     console.log("Finish Pulling. Time End" + new Date())
-    console.log("Time elapsed: " + new Date() - time_start + " millseconds");
+    console.log("Time elapsed: " + (new Date().getTime() - time_start.getTime()) + " millseconds");
     driver.quit();
 })();
 
