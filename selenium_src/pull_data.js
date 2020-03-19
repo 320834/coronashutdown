@@ -95,7 +95,7 @@ async function scrape_page(driver)
             
         // }
 
-        list_cases.unshift(case_obj)
+        list_cases.push(case_obj)
         console.log("Add new " + case_obj["cases"]);
         
 
@@ -113,14 +113,19 @@ async function scrape_page(driver)
     await driver.get(link)
 
     let index = 0;
-    await driver.executeScript("window.scrollTo(0,4000)", "")
+    // await driver.executeScript("window.scrollTo(0,4000)", "")
+    await driver.executeScript("document.getElementsByClassName('ant-table-footer')[0].scrollIntoView()", "")
 
     let loop_status = await driver.findElement(By.className(" ant-pagination-next")).getAttribute("aria-disabled") === "false"
+    await scrape_page(driver);
 
     while(loop_status)
     {
-        await scrape_page(driver);
         await driver.findElement(By.className(" ant-pagination-next")).click();
+        await scrape_page(driver);
+
+        await driver.executeScript("document.getElementsByClassName('ant-table-footer')[0].scrollIntoView()", "")
+
         write_file();
         console.log("Page " + index);
         index++;
