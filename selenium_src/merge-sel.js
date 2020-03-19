@@ -242,7 +242,7 @@ function write_file() {
     let data = JSON.stringify(jsonWrite);
   
     fs.writeFileSync("../debug_data/counties-cases.json", data);
-    fs.writeFileSync("../final_data/counties-cases-new.geojson", data);
+    fs.writeFileSync("../final_data/counties-cases.geojson", data);
   }
   
   function construct_cumulative() {
