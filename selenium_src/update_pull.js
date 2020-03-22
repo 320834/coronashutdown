@@ -7,24 +7,9 @@ let json_visited_cases = JSON.parse(rawCases);
 
 let link = "https://coronavirus.1point3acres.com/en";
 
-let list_cases = [];
-
 let dict_visited_cases = {};
 
 let visited_count = 0;
-
-let time_start = new Date();
-
-function construct_dict_visited_cases()
-{
-    for(let i = 0; i < json_visited_cases.length; i++)
-    {
-        let obj = json_visited_cases[i];
-        let key = obj["cases"] + obj["date"] + obj["state"] + obj["county"];
-
-        dict_visited_cases[key] = true;
-    }
-} 
 
 function format_date()
 {
@@ -50,6 +35,39 @@ function format_date()
 
     return key;
 }
+
+function get_number_cases(obj)
+{
+    let cases = obj["cases"];
+
+    if(typeof(cases) != "number" && cases !== "Death")
+    {
+        cases = cases.split(".")[1];
+        if(cases.includes("-"))
+        {
+            let top = cases.split("-")[1];
+            let bottom = cases.split("-")[0];
+
+            obj["cases"] = parseInt(top) - parseInt(bottom) + 1;
+        }
+        else
+        {
+            obj["cases"] = 1;
+        }
+    }
+}
+
+function construct_dict_visited_cases()
+{
+    for(let i = 0; i < json_visited_cases.length; i++)
+    {
+        let obj = json_visited_cases[i];
+        get_number_cases(obj);
+        let key = obj["date"] + obj["state"] + obj["county"];
+
+        dict_visited_cases[key] = true;
+    }
+} 
 
 async function write_file()
 {
@@ -111,29 +129,32 @@ async function scrape_page(driver)
             }
         }
 
-        // let key = case_obj["cases"] + case_obj["date"] + case_obj["state"] + case_obj["county"];
-        // if(dict_visited_cases[key] !== undefined)
-        // {
-        //     //Already in list, no need to add to list_cases
-        //     visited_count += 1;
-        //     console.log("Visited " + visited_count)
-        // }
-        // else
-        // {
-            
-        // }
+        let key = case_obj["date"] + case_obj["state"] + case_obj["county"];
+        if(dict_visited_cases[key] !== undefined)
+        {
+            //Already in list, no need to add to list_cases
+            visited_count += 1;
+            console.log("Visited " + visited_count)
+        }
+        else
+        {
+            visited_count = 0;
+            get_number_cases(case_obj)
+            list_cases.push(case_obj)
+            console.log("Add new " + case_obj["cases"] + " " + case_obj["date"] + " " + case_obj["state"] + " " + case_obj["county"]);
+        }
 
-        list_cases.push(case_obj)
-        console.log("Add new " + case_obj["cases"]);
+        
         
 
     }
 }
 
+
 (async function main(){
 
-    // list_cases = json_visited_cases;
-    // construct_dict_visited_cases();
+    list_cases = json_visited_cases;
+    construct_dict_visited_cases();
 
 
 
@@ -158,16 +179,15 @@ async function scrape_page(driver)
         console.log("Page " + index);
         index++;
 
-        // if(visited_count >= 15)
-        // {
-        //     driver.quit();
-        // }
-
         loop_status = await driver.findElement(By.className(" ant-pagination-next")).getAttribute("aria-disabled") === "false"
+
+        if(visited_count >= 30)
+        {
+            driver.quit();
+        }
     }
     
     console.log("Finish Pulling. Time End" + new Date())
     console.log("Time elapsed: " + (new Date().getTime() - time_start.getTime()) + " millseconds");
     driver.quit();
 })();
-

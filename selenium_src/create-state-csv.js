@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { Parser } = require('json2csv');
 
 let rawCases = fs.readFileSync("../selenium_data/us-cases-1point3acres.json");
 let rawStateAbbreviation = fs.readFileSync(
@@ -38,7 +39,7 @@ function create_state_list() {
 
 function pull_from_cases() {
   for (let i = 0; i < jsonCases.length; i++) {
-    get_number_cases(jsonCases[i]);
+    // get_number_cases(jsonCases[i]);
 
     if (jsonStateAbb[jsonCases[i]["state"]] != undefined) {
       let state = jsonStateAbb[jsonCases[i]["state"]];
@@ -58,12 +59,41 @@ function write_file() {
   fs.writeFileSync("../misc_data/state_confirmation_deaths.json", data);
 }
 
+function convert_csv()
+{
+  let list = [];
+  for (let [key, value] of Object.entries(US_state_list)) {
+      let obj = {
+        "State": key,
+        "Confirmed": value["Confirmed"],
+        "Deaths": value["Deaths"]
+      }
+
+      list.push(obj);
+  }
+
+  const fields = ["State", "Confirmed", "Deaths"];
+  const opts = {fields}
+
+  try {
+    const parser = new Parser(opts);
+    const csv = parser.parse(list);
+
+
+  fs.writeFileSync("../final_data/state_confirmation_deaths.csv", csv);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 function main() {
   create_state_list();
 
   pull_from_cases();
 
   write_file();
+
+  convert_csv()
 }
 
 main();
