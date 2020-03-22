@@ -1,10 +1,12 @@
-'Yauco|Puerto Rico':
-   { type: 'Feature',
-     properties:
-      { GEO_ID: '0500000US72153',
-        STATE: 'Puerto Rico',
-        COUNTY: 'Yauco',
-        NAME: 'Yauco',
-        LSAD: 'Muno',
-        CENSUSAREA: 68.192 },
-     geometry: { type: 'Polygon', coordinates: [Array] } } }
+
+cd selenium_src
+node update_pull.js
+node merge-sel.js
+node create-state-csv.js
+
+cd ..
+
+git add .
+git commit -m "new data"
+git push
+

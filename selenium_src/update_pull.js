@@ -11,6 +11,8 @@ let dict_visited_cases = {};
 
 let visited_count = 0;
 
+let time_start;
+
 function format_date()
 {
     dateObj = new Date();
@@ -156,7 +158,7 @@ async function scrape_page(driver)
     list_cases = json_visited_cases;
     construct_dict_visited_cases();
 
-
+    time_start = new Date()
 
     let driver = new webdriver.Builder().forBrowser('firefox').build();
     await driver.get(link)
@@ -181,9 +183,9 @@ async function scrape_page(driver)
 
         loop_status = await driver.findElement(By.className(" ant-pagination-next")).getAttribute("aria-disabled") === "false"
 
-        if(visited_count >= 30)
+        if(visited_count > 30)
         {
-            driver.quit();
+            break;
         }
     }
     
