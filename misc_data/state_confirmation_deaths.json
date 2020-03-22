@@ -20,8 +20,8 @@
         "Deaths": 0
     },
     "California": {
-        "Confirmed": 1586,
-        "Deaths": 20
+        "Confirmed": 1642,
+        "Deaths": 21
     },
     "Colorado": {
         "Confirmed": 476,
@@ -68,7 +68,7 @@
         "Deaths": 6
     },
     "Indiana": {
-        "Confirmed": 233,
+        "Confirmed": 240,
         "Deaths": 4
     },
     "Iowa": {
@@ -200,7 +200,7 @@
         "Deaths": 2
     },
     "Texas": {
-        "Confirmed": 622,
+        "Confirmed": 623,
         "Deaths": 3
     },
     "Utah": {
@@ -220,7 +220,7 @@
         "Deaths": 3
     },
     "Washington": {
-        "Confirmed": 1794,
+        "Confirmed": 1795,
         "Deaths": 63
     },
     "West Virginia": {

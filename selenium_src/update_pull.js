@@ -33,6 +33,12 @@ function format_date()
     if (month < 10) {
     month = "0" + month;
     }
+
+    if(minute < 10)
+    {
+        minute = "0" + minute;
+    }
+
     let key = month + "-" + date + "-" + year + "-" + hour + ":" + minute
 
     return key;
