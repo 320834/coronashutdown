@@ -1,47 +1,47 @@
 "State","Confirmed","Deaths"
-"Alabama",138,0
-"Alaska",21,0
+"Alabama",151,0
+"Alaska",22,0
 "American Samoa",0,0
 "Arizona",152,2
-"Arkansas",255,0
-"California",1642,21
-"Colorado",476,5
-"Connecticut",223,5
+"Arkansas",259,0
+"California",1788,25
+"Colorado",593,6
+"Connecticut",327,8
 "Delaware",47,0
 "District Of Columbia",102,2
 "Federated States Of Micronesia",0,0
-"Florida",830,8
-"Georgia",600,16
+"Florida",860,8
+"Georgia",611,16
 "Guam",27,1
-"Hawaii",48,0
-"Idaho",42,0
+"Hawaii",56,0
+"Idaho",51,0
 "Illinois",1347,6
-"Indiana",240,4
+"Indiana",243,5
 "Iowa",90,0
-"Kansas",64,2
+"Kansas",67,2
 "Kentucky",99,4
 "Louisiana",837,9
 "Maine",89,0
 "Marshall Islands",0,0
-"Maryland",244,3
+"Maryland",249,3
 "Massachusetts",646,5
-"Michigan",1007,9
+"Michigan",1008,9
 "Minnesota",169,0
 "Mississippi",207,2
-"Missouri",88,2
-"Montana",31,0
+"Missouri",130,2
+"Montana",32,0
 "Nebraska",51,0
 "Nevada",190,2
-"New Hampshire",65,0
+"New Hampshire",78,0
 "New Jersey",1914,14
-"New Mexico",57,0
-"New York",15782,22
-"North Carolina",310,0
-"North Dakota",28,0
+"New Mexico",65,0
+"New York",15791,22
+"North Carolina",318,0
+"North Dakota",30,0
 "Northern Mariana Islands",0,0
 "Ohio",355,0
 "Oklahoma",67,2
-"Oregon",161,4
+"Oregon",161,5
 "Palau",0,0
 "Pennsylvania",481,2
 "Puerto Rico",23,1
@@ -49,12 +49,12 @@
 "South Carolina",196,0
 "South Dakota",21,0
 "Tennessee",478,2
-"Texas",623,3
+"Texas",659,3
 "Utah",176,1
 "Vermont",52,2
 "Virgin Islands",0,0
 "Virginia",221,3
-"Washington",1795,63
-"West Virginia",12,0
-"Wisconsin",372,5
-"Wyoming",24,0
+"Washington",2001,63
+"West Virginia",16,0
+"Wisconsin",374,5
+"Wyoming",26,0
