@@ -79,7 +79,7 @@ async function write_file()
     fs.writeFileSync("../selenium_data/us-cases-1point3acres.json", data);
 
     //Write to archive data
-    fs.writeFileSync("../archive_data/us-cases-1point3acres-" + format_date() + ".json", data);
+    // fs.writeFileSync("../archive_data/us-cases-1point3acres-" + format_date() + ".json", data);
 }
 
 async function write_file_final()
@@ -186,7 +186,7 @@ async function scrape_page(driver)
 
         await driver.executeScript("document.getElementsByClassName('ant-table-footer')[0].scrollIntoView()", "")
 
-        write_file();
+        // write_file();
         console.log("Page " + index);
         index++;
 
