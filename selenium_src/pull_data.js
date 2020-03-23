@@ -82,6 +82,16 @@ async function write_file()
     fs.writeFileSync("../archive_data/us-cases-1point3acres-" + format_date() + ".json", data);
 }
 
+async function write_file_final()
+{
+    let data = JSON.stringify(list_cases, null, 4);
+
+    fs.writeFileSync("../selenium_data/us-cases-1point3acres.json", data);
+
+    //Write to archive data
+    fs.writeFileSync("../archive_data/us-cases-1point3acres-" + format_date() + ".json", data);
+}
+
 async function scrape_page(driver)
 {
     // let colObj = await driver.findElements(By.xpath("/html/body/div[1]/div/div[5]/div[2]/div[1]/div[5]/div/div/div/div[2]/div[1]/table/tbody/tr"));
@@ -187,6 +197,8 @@ async function scrape_page(driver)
 
         loop_status = await driver.findElement(By.className(" ant-pagination-next")).getAttribute("aria-disabled") === "false"
     }
+
+    write_file_final()
     
     console.log("Finish Pulling. Time End" + new Date())
     console.log("Time elapsed: " + (new Date().getTime() - time_start.getTime()) + " millseconds");
