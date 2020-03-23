@@ -26,6 +26,27 @@ function construct_dict_visited_cases()
     }
 } 
 
+function get_number_cases(obj)
+{
+    let cases = obj["cases"];
+
+    if(typeof(cases) != "number" && cases !== "Death")
+    {
+        cases = cases.split(".")[1];
+        if(cases.includes("-"))
+        {
+            let top = cases.split("-")[1];
+            let bottom = cases.split("-")[0];
+
+            obj["cases"] = parseInt(top) - parseInt(bottom) + 1;
+        }
+        else
+        {
+            obj["cases"] = 1;
+        }
+    }
+}
+
 function format_date()
 {
     dateObj = new Date();
@@ -123,6 +144,7 @@ async function scrape_page(driver)
             
         // }
 
+        get_number_cases(case_obj);
         list_cases.push(case_obj)
         console.log("Add new " + case_obj["cases"]);
         
