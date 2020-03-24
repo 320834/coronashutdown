@@ -1,10 +1,10 @@
 {
     "Alabama": {
-        "Confirmed": 167,
+        "Confirmed": 183,
         "Deaths": 0
     },
     "Alaska": {
-        "Confirmed": 32,
+        "Confirmed": 36,
         "Deaths": 0
     },
     "American Samoa": {
@@ -12,31 +12,31 @@
         "Deaths": 0
     },
     "Arizona": {
-        "Confirmed": 234,
+        "Confirmed": 235,
         "Deaths": 2
     },
     "Arkansas": {
-        "Confirmed": 174,
+        "Confirmed": 189,
         "Deaths": 0
     },
     "California": {
-        "Confirmed": 1910,
-        "Deaths": 30
+        "Confirmed": 2210,
+        "Deaths": 38
     },
     "Colorado": {
-        "Confirmed": 595,
+        "Confirmed": 723,
         "Deaths": 6
     },
     "Connecticut": {
-        "Confirmed": 327,
-        "Deaths": 8
+        "Confirmed": 415,
+        "Deaths": 10
     },
     "Delaware": {
         "Confirmed": 64,
         "Deaths": 0
     },
     "District Of Columbia": {
-        "Confirmed": 120,
+        "Confirmed": 141,
         "Deaths": 2
     },
     "Federated States Of Micronesia": {
@@ -44,11 +44,11 @@
         "Deaths": 0
     },
     "Florida": {
-        "Confirmed": 1171,
+        "Confirmed": 1183,
         "Deaths": 11
     },
     "Georgia": {
-        "Confirmed": 772,
+        "Confirmed": 779,
         "Deaths": 23
     },
     "Guam": {
@@ -56,19 +56,19 @@
         "Deaths": 1
     },
     "Hawaii": {
-        "Confirmed": 56,
+        "Confirmed": 77,
         "Deaths": 0
     },
     "Idaho": {
-        "Confirmed": 51,
+        "Confirmed": 68,
         "Deaths": 0
     },
     "Illinois": {
-        "Confirmed": 1284,
+        "Confirmed": 1290,
         "Deaths": 9
     },
     "Indiana": {
-        "Confirmed": 261,
+        "Confirmed": 271,
         "Deaths": 5
     },
     "Iowa": {
@@ -76,12 +76,12 @@
         "Deaths": 0
     },
     "Kansas": {
-        "Confirmed": 84,
+        "Confirmed": 85,
         "Deaths": 2
     },
     "Kentucky": {
-        "Confirmed": 104,
-        "Deaths": 4
+        "Confirmed": 110,
+        "Deaths": 5
     },
     "Louisiana": {
         "Confirmed": 1172,
@@ -100,15 +100,15 @@
         "Deaths": 3
     },
     "Massachusetts": {
-        "Confirmed": 646,
-        "Deaths": 5
+        "Confirmed": 777,
+        "Deaths": 6
     },
     "Michigan": {
-        "Confirmed": 1328,
+        "Confirmed": 1329,
         "Deaths": 8
     },
     "Minnesota": {
-        "Confirmed": 233,
+        "Confirmed": 235,
         "Deaths": 0
     },
     "Mississippi": {
@@ -116,20 +116,20 @@
         "Deaths": 2
     },
     "Missouri": {
-        "Confirmed": 153,
+        "Confirmed": 215,
         "Deaths": 3
     },
     "Montana": {
-        "Confirmed": 34,
+        "Confirmed": 46,
         "Deaths": 0
     },
     "Nebraska": {
-        "Confirmed": 51,
+        "Confirmed": 63,
         "Deaths": 0
     },
     "Nevada": {
-        "Confirmed": 245,
-        "Deaths": 2
+        "Confirmed": 322,
+        "Deaths": 4
     },
     "New Hampshire": {
         "Confirmed": 101,
@@ -140,19 +140,19 @@
         "Deaths": 26
     },
     "New Mexico": {
-        "Confirmed": 65,
+        "Confirmed": 83,
         "Deaths": 0
     },
     "New York": {
-        "Confirmed": 20875,
+        "Confirmed": 20991,
         "Deaths": 116
     },
     "North Carolina": {
-        "Confirmed": 335,
+        "Confirmed": 409,
         "Deaths": 0
     },
     "North Dakota": {
-        "Confirmed": 30,
+        "Confirmed": 33,
         "Deaths": 0
     },
     "Northern Mariana Islands": {
@@ -188,19 +188,19 @@
         "Deaths": 0
     },
     "South Carolina": {
-        "Confirmed": 196,
-        "Deaths": 0
+        "Confirmed": 301,
+        "Deaths": 2
     },
     "South Dakota": {
         "Confirmed": 28,
         "Deaths": 0
     },
     "Tennessee": {
-        "Confirmed": 505,
+        "Confirmed": 622,
         "Deaths": 2
     },
     "Texas": {
-        "Confirmed": 722,
+        "Confirmed": 798,
         "Deaths": 6
     },
     "Utah": {
@@ -217,22 +217,22 @@
     },
     "Virginia": {
         "Confirmed": 254,
-        "Deaths": 5
+        "Deaths": 6
     },
     "Washington": {
-        "Confirmed": 1997,
-        "Deaths": 78
+        "Confirmed": 2222,
+        "Deaths": 94
     },
     "West Virginia": {
-        "Confirmed": 16,
+        "Confirmed": 20,
         "Deaths": 0
     },
     "Wisconsin": {
-        "Confirmed": 416,
+        "Confirmed": 425,
         "Deaths": 6
     },
     "Wyoming": {
-        "Confirmed": 26,
+        "Confirmed": 28,
         "Deaths": 0
     }
 }
