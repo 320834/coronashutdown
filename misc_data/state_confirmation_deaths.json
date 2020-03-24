@@ -1,6 +1,6 @@
 {
     "Alabama": {
-        "Confirmed": 183,
+        "Confirmed": 196,
         "Deaths": 0
     },
     "Alaska": {
@@ -13,26 +13,26 @@
     },
     "Arizona": {
         "Confirmed": 235,
-        "Deaths": 2
+        "Deaths": 3
     },
     "Arkansas": {
-        "Confirmed": 189,
+        "Confirmed": 197,
         "Deaths": 0
     },
     "California": {
-        "Confirmed": 2210,
+        "Confirmed": 2227,
         "Deaths": 38
     },
     "Colorado": {
         "Confirmed": 723,
-        "Deaths": 6
+        "Deaths": 7
     },
     "Connecticut": {
         "Confirmed": 415,
         "Deaths": 10
     },
     "Delaware": {
-        "Confirmed": 64,
+        "Confirmed": 87,
         "Deaths": 0
     },
     "District Of Columbia": {
@@ -44,12 +44,12 @@
         "Deaths": 0
     },
     "Florida": {
-        "Confirmed": 1183,
-        "Deaths": 11
+        "Confirmed": 1227,
+        "Deaths": 15
     },
     "Georgia": {
-        "Confirmed": 779,
-        "Deaths": 23
+        "Confirmed": 803,
+        "Deaths": 24
     },
     "Guam": {
         "Confirmed": 29,
@@ -64,8 +64,8 @@
         "Deaths": 0
     },
     "Illinois": {
-        "Confirmed": 1290,
-        "Deaths": 9
+        "Confirmed": 1285,
+        "Deaths": 12
     },
     "Indiana": {
         "Confirmed": 271,
@@ -80,12 +80,12 @@
         "Deaths": 2
     },
     "Kentucky": {
-        "Confirmed": 110,
+        "Confirmed": 124,
         "Deaths": 5
     },
     "Louisiana": {
         "Confirmed": 1172,
-        "Deaths": 29
+        "Deaths": 30
     },
     "Maine": {
         "Confirmed": 107,
@@ -96,7 +96,7 @@
         "Deaths": 0
     },
     "Maryland": {
-        "Confirmed": 290,
+        "Confirmed": 349,
         "Deaths": 3
     },
     "Massachusetts": {
@@ -105,7 +105,7 @@
     },
     "Michigan": {
         "Confirmed": 1329,
-        "Deaths": 8
+        "Deaths": 11
     },
     "Minnesota": {
         "Confirmed": 235,
@@ -116,19 +116,19 @@
         "Deaths": 2
     },
     "Missouri": {
-        "Confirmed": 215,
-        "Deaths": 3
+        "Confirmed": 223,
+        "Deaths": 4
     },
     "Montana": {
         "Confirmed": 46,
         "Deaths": 0
     },
     "Nebraska": {
-        "Confirmed": 63,
+        "Confirmed": 64,
         "Deaths": 0
     },
     "Nevada": {
-        "Confirmed": 322,
+        "Confirmed": 278,
         "Deaths": 4
     },
     "New Hampshire": {
@@ -144,11 +144,11 @@
         "Deaths": 0
     },
     "New York": {
-        "Confirmed": 20991,
-        "Deaths": 116
+        "Confirmed": 23244,
+        "Deaths": 118
     },
     "North Carolina": {
-        "Confirmed": 409,
+        "Confirmed": 429,
         "Deaths": 0
     },
     "North Dakota": {
@@ -160,7 +160,7 @@
         "Deaths": 0
     },
     "Ohio": {
-        "Confirmed": 442,
+        "Confirmed": 443,
         "Deaths": 2
     },
     "Oklahoma": {
@@ -168,7 +168,7 @@
         "Deaths": 2
     },
     "Oregon": {
-        "Confirmed": 191,
+        "Confirmed": 193,
         "Deaths": 5
     },
     "Palau": {
@@ -176,11 +176,11 @@
         "Deaths": 0
     },
     "Pennsylvania": {
-        "Confirmed": 644,
-        "Deaths": 4
+        "Confirmed": 698,
+        "Deaths": 6
     },
     "Puerto Rico": {
-        "Confirmed": 31,
+        "Confirmed": 39,
         "Deaths": 2
     },
     "Rhode Island": {
@@ -188,7 +188,7 @@
         "Deaths": 0
     },
     "South Carolina": {
-        "Confirmed": 301,
+        "Confirmed": 298,
         "Deaths": 2
     },
     "South Dakota": {
@@ -196,11 +196,11 @@
         "Deaths": 0
     },
     "Tennessee": {
-        "Confirmed": 622,
+        "Confirmed": 615,
         "Deaths": 2
     },
     "Texas": {
-        "Confirmed": 798,
+        "Confirmed": 807,
         "Deaths": 6
     },
     "Utah": {
@@ -220,11 +220,11 @@
         "Deaths": 6
     },
     "Washington": {
-        "Confirmed": 2222,
+        "Confirmed": 2221,
         "Deaths": 94
     },
     "West Virginia": {
-        "Confirmed": 20,
+        "Confirmed": 22,
         "Deaths": 0
     },
     "Wisconsin": {
