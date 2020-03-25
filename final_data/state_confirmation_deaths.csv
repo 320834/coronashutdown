@@ -1,60 +1,60 @@
 "State","Confirmed","Deaths"
-"Alabama",224,0
-"Alaska",44,0
+"Alabama",242,0
+"Alaska",42,0
 "American Samoa",0,0
-"Arizona",326,4
-"Arkansas",223,1
-"California",2613,46
-"Colorado",875,8
+"Arizona",326,5
+"Arkansas",236,2
+"California",2634,51
+"Colorado",912,8
 "Connecticut",618,12
 "Delaware",104,0
 "District Of Columbia",187,2
 "Federated States Of Micronesia",0,0
-"Florida",1416,16
-"Georgia",1039,30
-"Guam",32,1
-"Hawaii",84,1
-"Idaho",81,0
+"Florida",1467,20
+"Georgia",1097,30
+"Guam",36,1
+"Hawaii",91,1
+"Idaho",91,0
 "Illinois",1537,13
-"Indiana",368,10
+"Indiana",389,12
 "Iowa",125,0
 "Kansas",102,1
 "Kentucky",163,5
 "Louisiana",1388,41
 "Maine",118,0
 "Marshall Islands",0,0
-"Maryland",352,4
+"Maryland",425,4
 "Massachusetts",1159,7
 "Michigan",1795,12
 "Minnesota",262,0
 "Mississippi",320,2
-"Missouri",270,5
+"Missouri",278,8
 "Montana",51,0
 "Nebraska",71,0
-"Nevada",284,6
+"Nevada",321,6
 "New Hampshire",108,1
 "New Jersey",3675,27
 "New Mexico",100,0
-"New York",25681,125
-"North Carolina",513,0
-"North Dakota",36,0
+"New York",30811,128
+"North Carolina",528,1
+"North Dakota",39,0
 "Northern Mariana Islands",0,0
 "Ohio",567,3
 "Oklahoma",106,3
-"Oregon",211,8
+"Oregon",214,8
 "Palau",0,0
-"Pennsylvania",946,6
+"Pennsylvania",1036,6
 "Puerto Rico",51,2
 "Rhode Island",124,0
-"South Carolina",342,2
+"South Carolina",342,4
 "South Dakota",30,0
-"Tennessee",780,3
-"Texas",995,9
+"Tennessee",815,3
+"Texas",1031,10
 "Utah",298,1
 "Vermont",95,4
 "Virgin Islands",0,0
-"Virginia",303,7
-"Washington",2488,102
-"West Virginia",40,0
-"Wisconsin",487,6
-"Wyoming",36,0
+"Virginia",304,7
+"Washington",2472,102
+"West Virginia",39,0
+"Wisconsin",488,6
+"Wyoming",40,0

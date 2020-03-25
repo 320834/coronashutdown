@@ -32,7 +32,7 @@ function get_number_cases(obj)
 
     if(typeof(cases) != "number" && cases !== "Death")
     {
-        cases = cases.split(".")[1];
+        // cases = cases.split(".")[1];
         if(cases.includes("-"))
         {
             let top = cases.split("-")[1];
