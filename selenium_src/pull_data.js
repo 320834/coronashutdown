@@ -95,8 +95,8 @@ async function write_file_final()
 async function scrape_page(driver)
 {
     // let colObj = await driver.findElements(By.xpath("/html/body/div[1]/div/div[5]/div[2]/div[1]/div[5]/div/div/div/div[2]/div[1]/table/tbody/tr"));
-    let rowObj = await driver.findElements(By.xpath("/html/body/div[1]/div/div[5]/div[2]/div[1]/div[5]/div/div/div/div[2]/div[1]/table/tbody/tr"))
-
+    let rowObj = await driver.findElements(By.xpath("/html/body/div[1]/div/div[5]/div[2]/div[1]/div[5]/div/div/div/div/div[1]/table/tbody/tr"))
+    // "/html/body/div[1]/div/div[5]/div[2]/div[1]/div[5]/div/div/div/div/div[1]/table/tbody"
     await rowObj[0].findElements(By.tagName("td"));
     
     for(let i = 0; i < rowObj.length; i++)
