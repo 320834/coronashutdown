@@ -156,7 +156,7 @@ async function scrape_page(driver)
 
         get_number_cases(case_obj);
         list_cases.push(case_obj)
-        console.log("Add new " + case_obj["cases"]);
+        // console.log("Add new " + case_obj["cases"]);
         
 
     }
