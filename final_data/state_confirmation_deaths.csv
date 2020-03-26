@@ -1,60 +1,60 @@
 "State","Confirmed","Deaths"
-"Alabama",242,0
-"Alaska",42,0
+"Alabama",386,1
+"Alaska",43,1
 "American Samoa",0,0
-"Arizona",326,5
-"Arkansas",236,2
-"California",2634,51
-"Colorado",912,8
-"Connecticut",618,12
-"Delaware",104,0
-"District Of Columbia",187,2
+"Arizona",401,5
+"Arkansas",308,2
+"California",3161,60
+"Colorado",1087,7
+"Connecticut",875,19
+"Delaware",119,0
+"District Of Columbia",231,3
 "Federated States Of Micronesia",0,0
-"Florida",1467,20
-"Georgia",1097,30
-"Guam",36,1
-"Hawaii",91,1
-"Idaho",91,0
-"Illinois",1537,13
-"Indiana",389,12
-"Iowa",125,0
-"Kansas",102,1
-"Kentucky",163,5
-"Louisiana",1388,41
-"Maine",118,0
+"Florida",1977,20
+"Georgia",1387,31
+"Guam",37,1
+"Hawaii",95,0
+"Idaho",138,0
+"Illinois",1869,16
+"Indiana",478,15
+"Iowa",146,1
+"Kansas",137,3
+"Kentucky",198,6
+"Louisiana",1795,60
+"Maine",142,0
 "Marshall Islands",0,0
-"Maryland",425,4
-"Massachusetts",1159,7
-"Michigan",1795,12
-"Minnesota",262,0
-"Mississippi",320,2
-"Missouri",278,8
-"Montana",51,0
-"Nebraska",71,0
-"Nevada",321,6
-"New Hampshire",108,1
-"New Jersey",3675,27
-"New Mexico",100,0
-"New York",30811,128
-"North Carolina",528,1
-"North Dakota",39,0
+"Maryland",426,4
+"Massachusetts",1838,11
+"Michigan",2298,13
+"Minnesota",287,0
+"Mississippi",377,6
+"Missouri",358,11
+"Montana",67,0
+"Nebraska",74,0
+"Nevada",330,6
+"New Hampshire",137,1
+"New Jersey",4407,28
+"New Mexico",113,0
+"New York",33030,139
+"North Carolina",624,2
+"North Dakota",45,0
 "Northern Mariana Islands",0,0
-"Ohio",567,3
-"Oklahoma",106,3
-"Oregon",214,8
+"Ohio",704,5
+"Oklahoma",164,6
+"Oregon",266,10
 "Palau",0,0
-"Pennsylvania",1036,6
+"Pennsylvania",1284,13
 "Puerto Rico",51,2
-"Rhode Island",124,0
-"South Carolina",342,4
-"South Dakota",30,0
-"Tennessee",815,3
-"Texas",1031,10
-"Utah",298,1
-"Vermont",95,4
+"Rhode Island",132,0
+"South Carolina",424,4
+"South Dakota",41,0
+"Tennessee",917,4
+"Texas",1337,13
+"Utah",346,1
+"Vermont",125,4
 "Virgin Islands",0,0
-"Virginia",304,7
-"Washington",2472,102
-"West Virginia",39,0
-"Wisconsin",488,6
-"Wyoming",40,0
+"Virginia",399,8
+"Washington",2600,105
+"West Virginia",52,0
+"Wisconsin",637,7
+"Wyoming",49,1
