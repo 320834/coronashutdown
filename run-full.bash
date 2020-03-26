@@ -5,7 +5,7 @@
 PATH=$PATH:/home/panda/bin
 
 cd /home/panda/Desktop/Repository/coronashutdown/selenium_src
-node update_pull.js
+node pull_data.js
 node merge-sel.js
 node create-state-csv.js
 
