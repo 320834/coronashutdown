@@ -1,3 +1,5 @@
+For git remember to do 
+git config credential.helper store
 
 cd selenium_src
 node update_pull.js
