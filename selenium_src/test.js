@@ -27,4 +27,4 @@ function format_date()
 }
 
 console.log(format_date())
-console.log("asdddasdfdd")
+console.log("asddddd")
