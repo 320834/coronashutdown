@@ -272,14 +272,18 @@ function fix_no_cases_date()
             }
 
             if (parseInt(yestObj.getDate()) < 10) {
-                date = "0" + yestObj.getDate();
+                yesDate = "0" + yestObj.getDate();
             } else {
-                date = yestObj.getDate();
+                yesDate = yestObj.getDate();
             }
 
 
-            if (month < 10) {
-                month = "0" + month;
+            if (yesMonth < 10) {
+                yesMonth = "0" + yesMonth;
+            }
+
+            if (yesMonth < 10) {
+                yesMonth = "0" + yesMonth;
             }
 
             let displayDate = date + "." + month + "." + year;
