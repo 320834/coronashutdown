@@ -210,39 +210,88 @@ function write_file() {
   }
 
 function construct_cumulative() {
-for (let [key, value] of Object.entries(county_dict)) {
-    let cumulative_count = 0;
-    let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
+    for (let [key, value] of Object.entries(county_dict)) {
+        let cumulative_count = 0;
+        let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
 
-    for (let i = 0; i < days; i++) {
-    let millitime = start_date.getTime() + 86400000 * i;
-    // let millitimeYes = start_date.getTime() + 86400000 * (i - 1);
+        for (let i = 0; i < days; i++) {
+        let millitime = start_date.getTime() + 86400000 * i;
+        // let millitimeYes = start_date.getTime() + 86400000 * (i - 1);
 
-    let dateObj = new Date(millitime);
-    // let dateObjYes = new Date(millitimeYes);
+        let dateObj = new Date(millitime);
+        // let dateObjYes = new Date(millitimeYes);
 
-    let date = "";
-    let month = parseInt(dateObj.getMonth()) + 1;
-    let year = dateObj.getFullYear();
+        let date = "";
+        let month = parseInt(dateObj.getMonth()) + 1;
+        let year = dateObj.getFullYear();
 
-    if (parseInt(dateObj.getDate()) < 10) {
-        date = "0" + dateObj.getDate();
-    } else {
-        date = dateObj.getDate();
-    }
+        if (parseInt(dateObj.getDate()) < 10) {
+            date = "0" + dateObj.getDate();
+        } else {
+            date = dateObj.getDate();
+        }
 
 
-    if (month < 10) {
-        month = "0" + month;
-    }
+        if (month < 10) {
+            month = "0" + month;
+        }
 
-    let displayDate = date + "." + month + "." + year;
-    // let displayDateYes = dateYes + "." + monthYes + "." + yearYes;
+        let displayDate = date + "." + month + "." + year;
+        // let displayDateYes = dateYes + "." + monthYes + "." + yearYes;
 
-    cumulative_count += value["properties"][displayDate];
-    value["properties"][displayDate] = cumulative_count;
+        cumulative_count += value["properties"][displayDate];
+        value["properties"][displayDate] = cumulative_count;
+        }
     }
 }
+
+function fix_no_cases_date()
+{
+    for (let [key, value] of Object.entries(county_dict)) {
+        // let cumulative_count = 0;
+        let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
+
+        for (let i = 1; i < days; i++) {
+            let millitime = start_date.getTime() + 86400000 * i;
+
+            let dateObj = new Date(millitime);
+            let yestObj = new Date(start_date.getTime() + 86400000 * (i-1))
+
+            let date = "";
+            let month = parseInt(dateObj.getMonth()) + 1;
+            let year = dateObj.getFullYear();
+
+            let yesDate = "";
+            let yesMonth = parseInt(yestObj.getMonth()) + 1;
+            let yesYear = yestObj.getFullYear();
+
+            if (parseInt(dateObj.getDate()) < 10) {
+                yesDate = "0" + dateObj.getDate();
+            } else {
+                yesDate = dateObj.getDate();
+            }
+
+            if (parseInt(yestObj.getDate()) < 10) {
+                date = "0" + yestObj.getDate();
+            } else {
+                date = yestObj.getDate();
+            }
+
+
+            if (month < 10) {
+                month = "0" + month;
+            }
+
+            let displayDate = date + "." + month + "." + year;
+            let yesDisplayDate = yesDate + "." + yesMonth + "." + yesYear;
+
+            if(value["properties"][displayDate] == 0)
+            {
+                value["properties"][displayDate] = value["properties"][yesDisplayDate]
+            }
+
+        }
+    }
 }
 
 function main()
@@ -253,7 +302,7 @@ function main()
 
     merge_cases_county();
 
-    // construct_cumulative();
+    fix_no_cases_date()
 
     write_file();
 }
