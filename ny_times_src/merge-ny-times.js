@@ -253,7 +253,7 @@ function main()
 
     merge_cases_county();
 
-    construct_cumulative();
+    // construct_cumulative();
 
     write_file();
 }
