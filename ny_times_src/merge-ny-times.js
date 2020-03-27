@@ -75,8 +75,7 @@ function construct_county_dict() {
 function set_date(obj)
 {
     let dateObj = new Date(obj["date"]);
-
-    obj["date_obj"] = dateObj;
+    dateObj = new Date(dateObj.getTime()+86400000)
 
     let date = "";
     let month = parseInt(dateObj.getMonth()) + 1;
@@ -209,41 +208,6 @@ function write_file() {
 
   }
 
-function construct_cumulative() {
-    for (let [key, value] of Object.entries(county_dict)) {
-        let cumulative_count = 0;
-        let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
-
-        for (let i = 0; i < days; i++) {
-        let millitime = start_date.getTime() + 86400000 * i;
-        // let millitimeYes = start_date.getTime() + 86400000 * (i - 1);
-
-        let dateObj = new Date(millitime);
-        // let dateObjYes = new Date(millitimeYes);
-
-        let date = "";
-        let month = parseInt(dateObj.getMonth()) + 1;
-        let year = dateObj.getFullYear();
-
-        if (parseInt(dateObj.getDate()) < 10) {
-            date = "0" + dateObj.getDate();
-        } else {
-            date = dateObj.getDate();
-        }
-
-
-        if (month < 10) {
-            month = "0" + month;
-        }
-
-        let displayDate = date + "." + month + "." + year;
-        // let displayDateYes = dateYes + "." + monthYes + "." + yearYes;
-
-        cumulative_count += value["properties"][displayDate];
-        value["properties"][displayDate] = cumulative_count;
-        }
-    }
-}
 
 function fix_no_cases_date()
 {

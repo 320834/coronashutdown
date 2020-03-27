@@ -1,5 +1,6 @@
 {
     "New York City": ["Kings", "Richmond", "New York", "Queens", "Bronx"],
+    "New York": ["Kings", "Richmond", "New York", "Queens", "Bronx"],
     "Kansas City": ["Jackson","Clay","Platte","Cass"],
     "Richmond City": ["Richmond"],
     "St. Louis City": ["St. Louis"],
