@@ -266,9 +266,9 @@ function fix_no_cases_date()
             let yesYear = yestObj.getFullYear();
 
             if (parseInt(dateObj.getDate()) < 10) {
-                yesDate = "0" + dateObj.getDate();
+                date = "0" + dateObj.getDate();
             } else {
-                yesDate = dateObj.getDate();
+                date = dateObj.getDate();
             }
 
             if (parseInt(yestObj.getDate()) < 10) {
@@ -278,8 +278,8 @@ function fix_no_cases_date()
             }
 
 
-            if (yesMonth < 10) {
-                yesMonth = "0" + yesMonth;
+            if (month < 10) {
+                month= "0" + month;
             }
 
             if (yesMonth < 10) {
