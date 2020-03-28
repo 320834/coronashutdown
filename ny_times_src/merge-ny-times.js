@@ -71,7 +71,6 @@ function construct_county_dict() {
     }
 }
 
-
 function set_date(obj)
 {
     let dateObj = new Date(obj["date"]);
