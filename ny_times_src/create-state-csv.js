@@ -74,7 +74,7 @@ function create_state_list() {
     construct_dates(obj, "confirmed")
     construct_dates(obj, "death")
 
-    US_state_list["U.S"] = obj;
+    US_state_list["U.S Total"] = obj;
   }
 
 function translate_date(date_input)
@@ -117,13 +117,13 @@ function parse_cases_for_state()
             if(obj["cases"] === "Death")
             {
                 US_state_list[state]["death"][key_date] += 1;
-                US_state_list["U.S"]["death"][key_date] += 1;
+                US_state_list["U.S Total"]["death"][key_date] += 1;
             }
             else
             {   
                 let cases = obj["cases"];
                 US_state_list[state]["confirmed"][key_date] += cases;
-                US_state_list["U.S"]["confirmed"][key_date] += cases;
+                US_state_list["U.S Total"]["confirmed"][key_date] += cases;
             }
         }
         
