@@ -62,6 +62,19 @@ function create_state_list() {
 
       US_state_list[value] = obj;
     }
+
+    //create US
+    let obj = {
+        current_confirmed: 0,
+        current_deaths: 0,
+        "confirmed": {},
+        "death": {}
+    }
+
+    construct_dates(obj, "confirmed")
+    construct_dates(obj, "death")
+
+    US_state_list["U.S"] = obj;
   }
 
 function translate_date(date_input)
@@ -104,11 +117,13 @@ function parse_cases_for_state()
             if(obj["cases"] === "Death")
             {
                 US_state_list[state]["death"][key_date] += 1;
+                US_state_list["U.S"]["death"][key_date] += 1;
             }
             else
             {   
                 let cases = obj["cases"];
                 US_state_list[state]["confirmed"][key_date] += cases;
+                US_state_list["U.S"]["confirmed"][key_date] += cases;
             }
         }
         
