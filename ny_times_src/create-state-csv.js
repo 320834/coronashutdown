@@ -198,12 +198,9 @@ function main()
 {
     create_state_list()
 
-    // console.log(US_state_list)
     parse_cases_for_state()
 
     fix_no_cases_date()
-
-    // console.log(US_state_list["New York"])
 
     write_file()
 }
