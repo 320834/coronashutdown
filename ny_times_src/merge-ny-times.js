@@ -1,9 +1,11 @@
 const fs = require("fs");
+let csv = require("csvtojson")
 
 let rawCases = fs.readFileSync("../ny_times_data/ny-times.json");
 let rawCounties = fs.readFileSync("../data/counties-new.json");
 let rawStateAbbreviation = fs.readFileSync("../misc_data/appreviations-states.json");
 let rawExceptions = fs.readFileSync("../misc_data/exceptions.json");
+let rawPopulation = fs.readFileSync("../data/co-est2019-alldata.csv");
 
 let jsonCases = JSON.parse(rawCases);
 let jsonCounties = JSON.parse(rawCounties);
@@ -16,6 +18,8 @@ let end_date = new Date(new Date().getTime() + 86400000 * 2);
 let county_dict = {}
 
 let debug_list = [];
+
+let list_population_per_county = {}
 
 function construct_dates(county_index) {
     let date_dict = {};
@@ -188,7 +192,7 @@ function merge_cases_county()
     }
 }
 
-function write_file() {
+function write_file_cases() {
     let features = [];
   
     for (let [key, value] of Object.entries(county_dict)) {
@@ -204,9 +208,7 @@ function write_file() {
   
     fs.writeFileSync("../debug_data/counties-cases.json", data);
     fs.writeFileSync("../final_data/counties-cases.geojson", data);
-
-  }
-
+}
 
 function fix_no_cases_date()
 {
@@ -261,6 +263,177 @@ function fix_no_cases_date()
     }
 }
 
+//=============================================================================================
+function construct_population_county_list(jsonObj)
+{
+    // console.log(jsonObj[1])
+            
+    for(var i = 0; i < jsonObj.length; i++)
+    {
+        let obj = jsonObj[i];
+
+        if(obj["STATE"] !== obj["CTYNAME"])
+        {
+            let county_name = obj["CTYNAME"];
+            let key = ""
+
+            if(county_name.includes("city"))
+            {
+                key = county_name.split(" city")[0] + "|" + obj["STNAME"];
+            }
+            else if(county_name.includes("County"))
+            {
+                key = county_name.split(" County")[0] + "|" + obj["STNAME"];
+            }
+            else
+            {
+                key = county_name.split(" Parish")[0] + "|" + obj["STNAME"];
+            }
+
+            // console.log(county_name)
+            list_population_per_county[key] = obj
+        }
+    }
+}
+
+
+function get_ratio_per_ten_thousand(county_state_key, cases, population)
+{
+    let population_per_thousand = population/10000;
+    return cases/population_per_thousand;
+
+}
+
+function handle_special_cases_population(county_state_key, cases, ratio)
+{
+    if(county_state_key === "Kings|New York" 
+    || county_state_key === "Queens|New York" 
+    || county_state_key === "Richmond|New York"
+    || county_state_key === "Bronx|New York"
+    || county_state_key === "New York|New York")
+    {
+        // console.log(county_state_key)
+        let population_per_thousand = 8623000/10000;
+        return cases/population_per_thousand;
+    }
+
+    return ratio
+}
+
+function calulate_cases_per_capita()
+{
+    // let index = 0;
+    let visited = {}
+
+    for (let [key, value] of Object.entries(county_dict)) {
+        // let cumulative_count = 0;
+        let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
+
+        // if(index === 2)
+        // {
+        //     console.log(value);
+        // }
+
+        // index++;
+
+        for (let i = 0; i < days; i++) {
+            let millitime = start_date.getTime() + 86400000 * i;
+
+            let dateObj = new Date(millitime);
+
+            let date = "";
+            let month = parseInt(dateObj.getMonth()) + 1;
+            let year = dateObj.getFullYear();
+
+            if (parseInt(dateObj.getDate()) < 10) {
+                date = "0" + dateObj.getDate();
+            } else {
+                date = dateObj.getDate();
+            }
+
+            if (month < 10) {
+                month= "0" + month;
+            }
+
+
+            let displayDate = date + "." + month + "." + year;
+
+            let county_state_key = value["properties"]["COUNTY"] + "|" + value["properties"]["STATE"];
+
+            if(list_population_per_county[county_state_key] != undefined)
+            {
+                let population = list_population_per_county[county_state_key]["POPESTIMATE2019"];
+                let cases = value["properties"][displayDate];
+
+                let cases_per_thousand = get_ratio_per_ten_thousand(county_state_key,cases, population)
+                cases_per_thousand = handle_special_cases_population(county_state_key, cases, cases_per_thousand);
+
+                cases_per_thousand = cases_per_thousand.toFixed(0);
+                cases_per_thousand = parseInt(cases_per_thousand);
+
+                value["properties"][displayDate] = cases_per_thousand;
+            }
+            else
+            {
+                // if(!county_state_key.includes("Puerto Rico"))
+                // {
+                //     if(visited[county_state_key] === undefined)
+                //     {
+                //         visited[county_state_key] = true;
+                //     }
+                
+                // }
+                
+            }
+            
+            
+
+        }
+    }
+
+    // console.log(visited)
+}
+
+function cases_per_capita()
+{
+    // console.log(typeof rawPopulation.toString())
+    csv()
+        .fromString(rawPopulation.toString())
+        .then((jsonObj)=>{
+
+            construct_population_county_list(jsonObj)
+
+            calulate_cases_per_capita();
+
+            // console.log(county_dict["New York|New York"]["properties"]["25.03.2020"])
+            // console.log(county_dict["Queens|New York"]["properties"]["25.03.2020"])
+            // console.log(county_dict["Richmond|New York"]["properties"]["25.03.2020"])
+            // console.log(county_dict["Kings|New York"]["properties"]["25.03.2020"])
+            // console.log(county_dict["Bronx|New York"]["properties"]["25.03.2020"])
+
+            write_file_cases_per_capita();
+        })
+}
+
+function write_file_cases_per_capita()
+{
+    let features = [];
+  
+    for (let [key, value] of Object.entries(county_dict)) {
+      features.push(value);
+    }
+  
+    let jsonWrite = {
+      type: "FeatureCollection",
+      features: features
+    };
+  
+    let data = JSON.stringify(jsonWrite);
+  
+    fs.writeFileSync("../debug_data/counties-per-capita-cases.json", data);
+    fs.writeFileSync("../final_data/counties-per-capita-cases.geojson", data);
+}
+
 function main()
 {
     construct_county_dict();
@@ -271,7 +444,10 @@ function main()
 
     fix_no_cases_date()
 
-    write_file();
+    write_file_cases();
+
+    cases_per_capita();
+
 }
 
 main();
