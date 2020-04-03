@@ -6,6 +6,7 @@ let rawCounties = fs.readFileSync("../data/counties-new.json");
 let rawStateAbbreviation = fs.readFileSync("../misc_data/appreviations-states.json");
 let rawExceptions = fs.readFileSync("../misc_data/exceptions.json");
 let rawPopulation = fs.readFileSync("../data/co-est2019-alldata.csv");
+let rawArea = fs.readFileSync("../data/LND01.csv");
 
 let jsonCases = JSON.parse(rawCases);
 let jsonCounties = JSON.parse(rawCounties);
@@ -20,6 +21,7 @@ let county_dict = {}
 let debug_list = [];
 
 let list_population_per_county_dict = {}
+let list_area_per_county_dict = {}
 
 
 //====================================================================================
@@ -163,6 +165,7 @@ function parse_cases()
 }
 
 //=============================================================================================
+//Part 3
 
 /**
  * Take a case object and check if it falls under the exceptions category
@@ -261,6 +264,7 @@ function merge_cases_county()
 }
 
 //==================================================================================================
+//Part 4 and 5
 
 /**
  * Does error checking on any dates that don't have cases. Takes previous date case if 0 are found
@@ -312,6 +316,8 @@ function write_file_cases() {
 }
 
 //===================================================================================================
+//Part 6
+
 /**
  * Takes a json object and create a dictionary for county population
  * 
@@ -448,10 +454,10 @@ function calulate_cases_per_capita()
 /**
  * Main function to get the county of cases per ten thousand capita. First it fetches the data from csv
  */
-function cases_per_capita()
+async function cases_per_capita()
 {
     // console.log(typeof rawPopulation.toString())
-    csv()
+    return csv()
         .fromString(rawPopulation.toString())
         .then((jsonObj)=>{
 
@@ -483,7 +489,145 @@ function write_file_cases_per_capita()
   
     fs.writeFileSync("../debug_data/counties-per-capita-cases.json", data);
     fs.writeFileSync("../final_data/counties-per-capita-cases.geojson", data);
+
+    console.log("Finish writing county per capita file")
 }
+
+//================================================================================================
+//Part 7
+
+/**
+ * Construct dictionary of counties and their respective area size
+ * @param {JSON} jsonObj 
+ */
+function construct_area_county_list(jsonObj)
+{
+    for(let i = 0; i < jsonObj.length; i++)
+    {
+        let obj = jsonObj[i];
+        if(obj["Areaname"].includes(","))
+        {
+            let comp = obj["Areaname"].split(", ");
+            let state = jsonStateAbb[comp[1]];
+            let key = comp[0] + "|" + state;
+
+            list_area_per_county_dict[key] = obj;
+        }
+        else
+        {
+            //Not a county
+        }
+        
+    }
+}
+
+function handle_special_cases_area(county_state_key, cases, ratio)
+{
+    if(county_state_key === "Kings|New York" 
+    || county_state_key === "Queens|New York" 
+    || county_state_key === "Richmond|New York"
+    || county_state_key === "Bronx|New York"
+    || county_state_key === "New York|New York")
+    {
+        // console.log(county_state_key
+        return cases/303;
+    }
+    
+
+    return ratio
+}
+
+/**
+ * Calculate each date per sq mile
+ */
+function calculate_cases_per_sqm()
+{
+    for(let [key, value] of Object.entries(county_dict))
+    {
+        let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
+
+        for (let i = 0; i < days; i++) {
+            let millitime = start_date.getTime() + 86400000 * i;
+
+            let dateObj = new Date(millitime);
+
+            let displayDate = format_date(dateObj);
+
+            let county_state_key = value["properties"]["COUNTY"] + "|" + value["properties"]["STATE"];
+            
+            if(list_area_per_county_dict[county_state_key] != undefined)
+            {
+                let area = list_area_per_county_dict[county_state_key]["LND010190D"];
+                let cases = value["properties"]["date_ind"][displayDate];
+
+                let cases_per_sqm = (cases/area);
+                cases_per_sqm = handle_special_cases_area(county_state_key, cases, cases_per_sqm);
+
+                cases_per_sqm = parseFloat(cases_per_sqm.toFixed(4));
+
+                
+                value["properties"][displayDate] = cases_per_sqm;
+            }
+            else
+            {
+
+                if(county_state_key === "District of Columbia|District of Columbia")
+                {
+                    let cases = value["properties"]["date_ind"][displayDate];
+
+                    let cases_per_sqm = parseInt((cases/(68.34)).toFixed(4));
+
+                    value["properties"][displayDate] = cases_per_sqm;
+                }
+                else
+                {
+                    value["properties"][displayDate] = 0
+                }
+                
+                
+            }
+
+        }
+    }
+}
+
+function write_file_cases_per_sqm()
+{
+    let features = [];
+  
+    for (let [key, value] of Object.entries(county_dict)) {
+      features.push(value);
+    }
+  
+    let jsonWrite = {
+      type: "FeatureCollection",
+      features: features
+    };
+  
+    let data = JSON.stringify(jsonWrite);
+  
+    fs.writeFileSync("../debug_data/counties-per-sqm-cases.json", data);
+    fs.writeFileSync("../final_data/counties-per-sqm-cases.geojson", data);
+
+    console.log("Finish writing county per sq mile file")
+}
+
+async function cases_per_county_sqm()
+{
+    // console.log(typeof rawPopulation.toString())
+    return csv()
+        .fromString(rawArea.toString())
+        .then((jsonObj)=>{
+
+            construct_area_county_list(jsonObj);
+
+            calculate_cases_per_sqm();
+
+            write_file_cases_per_sqm()
+
+        })
+}
+
 
 //================================================================================================
 
@@ -505,7 +649,12 @@ function main()
     write_file_cases();
 
     //Part 6, calculate cases per ten thousand capita.
-    cases_per_capita();
+    cases_per_capita()
+        //Part 7, calculate cases per square mile
+        .then(cases_per_county_sqm)
+        .then(function(){
+            console.log("Finish merging")
+        })
 
 }
 
