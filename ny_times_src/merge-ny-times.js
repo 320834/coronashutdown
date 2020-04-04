@@ -365,7 +365,7 @@ function construct_population_county_list(jsonObj)
  */
 function get_ratio_per_ten_thousand(county_state_key, cases, population)
 {
-    let population_per_thousand = population/10000;
+    let population_per_thousand = population/100000;
     return cases/population_per_thousand;
 
 }
@@ -389,7 +389,7 @@ function handle_special_cases_population(county_state_key, cases, ratio)
     || county_state_key === "New York|New York")
     {
         // console.log(county_state_key)
-        let population_per_thousand = 8623000/10000;
+        let population_per_thousand = 8623000/100000;
         return cases/population_per_thousand;
     }
 
