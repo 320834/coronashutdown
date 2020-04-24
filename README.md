@@ -29,10 +29,15 @@ Ex.
 ## Install
 
 npm i sync-request
+
 npm i axios
+
 npm i selenium-webdriver
+
 npm i json2csv
+
 npm i csv2json
+
 
 ## Running 
 
