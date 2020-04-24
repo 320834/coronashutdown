@@ -38,6 +38,8 @@ npm i json2csv
 
 npm i csv2json
 
+npm i csvtojson
+
 
 ## Running 
 
