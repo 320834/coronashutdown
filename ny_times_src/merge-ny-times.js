@@ -606,7 +606,7 @@ function write_file_cases_per_sqm()
   
     let data = JSON.stringify(jsonWrite);
   
-    fs.writeFileSync("../debug_data/counties-per-sqm-cases.json", data);
+    // fs.writeFileSync("../debug_data/counties-per-sqm-cases.json", data);
     fs.writeFileSync("../final_data/counties-per-sqm-cases.geojson", data);
 
     console.log("Finish writing county per sq mile file")
