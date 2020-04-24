@@ -119,7 +119,7 @@ function write_file_cases()
 
     fs.writeFileSync("../ny_times_data/ny-times.json", data);
     //Write to archive data
-    fs.writeFileSync("../archive_data/ny-times.json-" + format_date() + ".json", data);
+    // fs.writeFileSync("../archive_data/ny-times.json-" + format_date() + ".json", data);
 }
 
 function main()
