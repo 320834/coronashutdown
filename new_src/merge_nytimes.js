@@ -76,7 +76,11 @@ function append_property_dates(obj)
  */
 function construct_county_dict()
 {
-    let obj = json_counties["features"];
+    let obj_total = JSON.parse(raw_counties);
+
+    let obj = obj_total["features"]
+
+    let dict = {}
 
     for(let i = 0; i < obj.length; i++)
     {
@@ -84,8 +88,10 @@ function construct_county_dict()
 
         let key = obj[i]["properties"]["STATE"]+obj[i]["properties"]["COUNTY"];
 
-        county_dict[key] = obj[i];
+        dict[key] = obj[i];
     }
+
+    return dict;
 }
 
 /**
@@ -213,9 +219,11 @@ function fix_exceptions(case_obj)
  */
 function hard_clone_obj()
 {
-    cases_dict = { ...county_dict };
-    capita_dict = { ...county_dict };
-    sqm_dict = { ...county_dict };
+    cases_dict = JSON.parse(JSON.stringify(county_dict));
+    capita_dict = construct_county_dict(capita_dict)
+    sqm_dict = construct_county_dict(sqm_dict)
+
+    return;
 }
 
 //==========================================================================================================
@@ -304,8 +312,8 @@ function calculate_cases_per_capita(pop_county_dict)
             if(pop_county_dict[key] != undefined)
             {
                 let population = pop_county_dict[key]["POPESTIMATE2019"];
-                let cases = value["properties"][cases_date];
-                let death = value["properties"][death_date];
+                //
+                let cases = county_dict[key]["properties"][cases_date];
 
                 let cases_per_capita = get_ratio_per_hundred_thousand(key, cases, population);
                 cases_per_capita = handle_special_cases_population(key, cases, cases_per_capita);
@@ -340,13 +348,98 @@ async function cases_per_capita()
 
             calculate_cases_per_capita(population_county_dict);
 
-            // fs.writeFileSync("../debug_data/capita.json", JSON.stringify(capita_dict, null, 4))
-
-            // write_file_cases_per_capita();
         })
 }
 
 //===========================================================================================================
+
+/**
+ * Construct county list that has the area 
+ * @param {Object} area_obj 
+ */
+function construct_area_county_list(area_obj)
+{
+    area_county_dict = {};
+    for(let i = 0; i < area_obj.length; i++)
+    {
+        let obj = area_obj[i];
+
+        let key = obj["STCOU"];
+
+        area_county_dict[key] = obj;
+    }
+
+    return area_county_dict;
+}
+
+/**
+ * Handles areas like New York City where cases are aggregated to a city level rather than by counties
+ * @param {String} key 
+ * @param {Number} cases 
+ * @param {Number} original 
+ */
+function handle_special_cases_area(key, cases, original)
+{
+    if(key === "36047" 
+    || key === "36081" 
+    || key === "36061"
+    || key === "36085"
+    || key === "36005")
+    {
+        // console.log(county_state_key
+        return cases/303;
+    }
+    
+
+    return original;
+}
+
+/**
+ * A dictionary of counties with areas
+ * @param {Object} area_county_dict 
+ */
+function calculate_cases_per_sqm(area_county_dict)
+{
+    let missing = {};
+
+    for(let [key,value] of Object.entries(sqm_dict))
+    {
+        let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
+
+        for(let i = 0; i < days; i++)
+        {
+            let millitime = start_date.getTime() + 86400000 * i;
+
+            let dateObj = new Date(millitime);
+
+            let cases_date = format_date(dateObj);
+            let death_date = cases_date + ".d";
+
+            let key = value["properties"]["STATE"] + value["properties"]["COUNTY"];
+
+            if(area_county_dict[key] !== undefined)
+            {
+                let area = area_county_dict[key]["LND010190D"];
+                let cases = county_dict[key]["properties"][cases_date];
+
+                let cases_per_sqm = cases/area;
+
+                cases_per_sqm = handle_special_cases_area(key, cases, cases_per_sqm);
+
+                cases_per_sqm = parseFloat(cases_per_sqm.toFixed(4));
+
+                
+                value["properties"][cases_date] = cases_per_sqm;
+            }
+            else
+            {
+                missing[key] = 0
+            }
+        }
+    }
+
+}
+
 /**
  * Main function to get county of cases per square mile.
  */
@@ -355,14 +448,13 @@ async function cases_per_county_sqm()
     // console.log(typeof rawPopulation.toString())
     return csv()
         .fromString(raw_area.toString())
-        .then((jsonObj)=>{
+        .then((area_obj)=>{
 
             console.log("Read Population Per SQM")
-            // construct_area_county_list(jsonObj);
+            area_obj = construct_area_county_list(area_obj);
 
-            // calculate_cases_per_sqm();
+            calculate_cases_per_sqm(area_obj);
 
-            // write_file_cases_per_sqm()
 
         })
 }
@@ -372,13 +464,77 @@ async function read_csv()
     return 0;
 }
 
+function write_file_cases()
+{
+    let features = [];
+  
+    for (let [key, value] of Object.entries(cases_dict)) {
+      features.push(value);
+    }
+  
+    let jsonWrite = {
+      type: "FeatureCollection",
+      features: features
+    };
+  
+    let data = JSON.stringify(jsonWrite);
+  
+    fs.writeFileSync("../debug_data/counties-cases.json", data);
+    fs.writeFileSync("../final_data/counties-cases.geojson", data);
+
+    console.log("Finish writing cases")
+}
+
+function write_file_sqm()
+{
+    let features = [];
+  
+    for (let [key, value] of Object.entries(sqm_dict)) {
+      features.push(value);
+    }
+  
+    let jsonWrite = {
+      type: "FeatureCollection",
+      features: features
+    };
+  
+    let data = JSON.stringify(jsonWrite);
+  
+    fs.writeFileSync("../debug_data/counties-per-sqm-cases.json", data);
+    fs.writeFileSync("../final_data/counties-per-sqm-cases.geojson", data);
+
+    console.log("Finish writing sqm")
+}
+
+function write_file_capita()
+{
+    let features = [];
+  
+    for (let [key, value] of Object.entries(capita_dict)) {
+      features.push(value);
+    }
+  
+    let jsonWrite = {
+      type: "FeatureCollection",
+      features: features
+    };
+  
+    let data = JSON.stringify(jsonWrite, null, 4);
+  
+    fs.writeFileSync("../debug_data/counties-per-capita-cases.json", data);
+    fs.writeFileSync("../final_data/counties-per-capita-cases.geojson", data);
+
+    console.log("Finish writing capita")
+}
+
 function main()
 {
-    construct_county_dict();
+    county_dict = construct_county_dict();
 
     merge_cases_death_to_county_map();
 
     fix_no_cases_date();
+    // console.log(county_dict["36047"]["properties"]['22.04.2020'])
 
     hard_clone_obj()
 
@@ -387,7 +543,18 @@ function main()
     read_csv()
         .then(cases_per_capita)
         .then(cases_per_county_sqm)
-        .then(function(){console.log("Finish Merging")})
+        .then(function()
+            {
+                // console.log(cases_dict["36047"]["properties"]['22.04.2020']);
+                // console.log(sqm_dict["36047"]["properties"]['22.04.2020']);
+                // console.log(capita_dict["36047"]["properties"]['22.04.2020']);
+
+                write_file_cases();
+                write_file_sqm();
+                write_file_capita();
+
+                console.log("Finish Merging")
+            })
 }
 
 main()

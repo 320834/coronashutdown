@@ -3,9 +3,11 @@ let a = {
     "two": 2
 }
 
-let b = { ...a }
+let b = JSON.parse(JSON.stringify(a));
 
 b["one"] = 100
+
+a["two"] = 10
 
 console.log(a)
 
