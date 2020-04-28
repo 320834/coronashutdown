@@ -519,7 +519,7 @@ function write_file_capita()
       features: features
     };
   
-    let data = JSON.stringify(jsonWrite, null, 4);
+    let data = JSON.stringify(jsonWrite);
   
     fs.writeFileSync("../debug_data/counties-per-capita-cases.json", data);
     fs.writeFileSync("../final_data/counties-per-capita-cases.geojson", data);
