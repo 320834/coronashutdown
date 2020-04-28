@@ -4,9 +4,13 @@
 
 PATH=$PATH:/home/panda/bin
 
-cd /home/panda/Desktop/Repository/coronashutdown/ny_times_src
+cd /home/panda/Desktop/Repository/coronashutdown/
+
+git pull
+
+cd /home/panda/Desktop/Repository/coronashutdown/new_src
 node pull_data.js
-node merge-ny-times.js
+node merge_nytimes.js
 node create-state-csv.js
 
 cd ..
@@ -23,6 +27,8 @@ cp ~/Desktop/Repository/coronashutdown/final_data/counties-per-sqm-cases.geojson
 cp ~/Desktop/Repository/coronashutdown/final_data/state_confirmation_deaths.json ~/Desktop/Repository/Geojson_data
 
 cd /home/panda/Desktop/Repository/Geojson_data
+
+git pull
 
 #Push to geojson_Data repo
 git add .
