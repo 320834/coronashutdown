@@ -20,6 +20,9 @@ let sqm_dict = {}
 let capita_dict = {}
 let mortality_dict = {}
 
+//At what number of cases will mortality be calculated.
+let mortality_case_threshold = 200;
+
 //=======================================================================
 //Misc Functions
 
@@ -463,8 +466,43 @@ async function cases_per_county_sqm()
 
 //===========================================================================================
 
+function mortality_handle_exceptions()
+{
 
+}
 
+async function mortality_rate_per_county()
+{
+    for(let [key,value] of Object.entries(mortality_dict))
+    {
+        let days = Math.floor((end_date - start_date) / 1000 / 60 / 60 / 24);
+
+        for(let i = 0; i < days; i++)
+        {
+            let millitime = start_date.getTime() + 86400000 * i;
+
+            let dateObj = new Date(millitime);
+
+            let cases_date = format_date(dateObj);
+            let death_date = cases_date + ".d";
+
+            let key = value["properties"]["STATE"] + value["properties"]["COUNTY"];
+
+            let day_cases = county_dict[key]["properties"][cases_date];
+            let day_death = county_dict[key]["properties"][death_date];
+
+            let mortality = 0
+            if(day_cases >= mortality_case_threshold)
+            {
+                mortality = day_death/day_cases;
+            }
+
+            value["properties"][cases_date] = day_cases;
+            value["properties"][death_date] = parseFloat(mortality.toFixed(4));
+            
+        }
+    }
+}
 
 //===========================================================================================
 async function read_csv()
@@ -529,10 +567,31 @@ function write_file_capita()
   
     let data = JSON.stringify(jsonWrite);
   
-    fs.writeFileSync("../debug_data/counties-per-capita-cases.json", data);
+    //fs.writeFileSync("../debug_data/counties-mortality.json", data);
     fs.writeFileSync("../final_data/counties-per-capita-cases.geojson", data);
 
-    console.log("Finish writing capita")
+    console.log("Finish writing mortality")
+}
+
+function write_file_mortality()
+{
+    let features = [];
+  
+    for (let [key, value] of Object.entries(mortality_dict)) {
+      features.push(value);
+    }
+  
+    let jsonWrite = {
+      type: "FeatureCollection",
+      features: features
+    };
+  
+    let data = JSON.stringify(jsonWrite);
+  
+    //fs.writeFileSync("../debug_data/counties-per-capita-cases.json", data);
+    fs.writeFileSync("../final_data/counties-mortality.geojson", data);
+
+    console.log("Finish writing mortality")
 }
 
 function main()
@@ -551,6 +610,7 @@ function main()
     read_csv()
         .then(cases_per_capita)
         .then(cases_per_county_sqm)
+        .then(mortality_rate_per_county)
         .then(function()
             {
                 // console.log(cases_dict["36047"]["properties"]['22.04.2020']);
@@ -560,6 +620,7 @@ function main()
                 write_file_cases();
                 write_file_sqm();
                 write_file_capita();
+                write_file_mortality();
 
                 console.log("Finish Merging")
             })
