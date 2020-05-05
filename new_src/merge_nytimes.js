@@ -18,6 +18,7 @@ let county_dict = {}
 let cases_dict = {}
 let sqm_dict = {}
 let capita_dict = {}
+let mortality_dict = {}
 
 //=======================================================================
 //Misc Functions
@@ -222,6 +223,7 @@ function hard_clone_obj()
     cases_dict = JSON.parse(JSON.stringify(county_dict));
     capita_dict = construct_county_dict(capita_dict)
     sqm_dict = construct_county_dict(sqm_dict)
+    mortality_dict = construct_county_dict(mortality_dict)
 
     return;
 }
@@ -459,6 +461,12 @@ async function cases_per_county_sqm()
         })
 }
 
+//===========================================================================================
+
+
+
+
+//===========================================================================================
 async function read_csv()
 {
     return 0;
