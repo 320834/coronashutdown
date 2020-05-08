@@ -21,7 +21,7 @@ let capita_dict = {}
 let mortality_dict = {}
 
 //At what number of cases will mortality be calculated.
-let mortality_case_threshold = 200;
+let mortality_case_threshold = 30;
 
 //=======================================================================
 //Misc Functions
