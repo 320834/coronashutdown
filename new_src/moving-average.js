@@ -219,6 +219,19 @@ function hard_clone_obj()
     return;
 }
 
+//=========================================================================
+
+function check_average_valid(curr, week_one_first, week_one_second, week_two_first, week_two_second, key)
+{
+    let obj = county_dict[key]["properties"];
+    if(obj[curr] !== undefined && obj[week_one_first] !== undefined && obj[week_one_second] !== undefined && obj[week_two_first] !== undefined && obj[week_two_second] !== undefined)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 function calculate_seven_day_average()
 {
     let missing = {};
@@ -231,20 +244,75 @@ function calculate_seven_day_average()
         {
             let millitime = start_date.getTime() + 86400000 * i;
             let dateObj = new Date(millitime);
-            let week_one_second = format_date(new Date(millitime - 86400000)) + ".d";
-            let week_one_first = format_date(new Date(millitime - 7 * 86400000)) + ".d";
+            
+            let week_one_second_death = format_date(new Date(millitime - 86400000)) + ".d";
+            let week_one_second_cases = format_date(new Date(millitime - 86400000));
 
-            let week_two_second = format_date(new Date(millitime - 8 * 86400000)) + ".d";
-            let week_two_first = format_date(new Date(millitime - 14 * 86400000)) + ".d";
+            let week_one_first_death = format_date(new Date(millitime - 7 * 86400000)) + ".d";
+            let week_one_first_cases = format_date(new Date(millitime - 7 * 86400000));
 
-            let current_date = format_date(dateObj);
-            let death_date = current_date + ".d";
+            let week_two_second_death = format_date(new Date(millitime - 8 * 86400000)) + ".d";
+            let week_two_second_cases = format_date(new Date(millitime - 8 * 86400000));
 
-            let key = value["properties"]["STATE"] + value["properties"]["COUNTY"];
+            let week_two_first_death = format_date(new Date(millitime - 14 * 86400000)) + ".d";
+            let week_two_first_cases = format_date(new Date(millitime - 14 * 86400000));
 
+            let current_death_date = format_date(dateObj) + ".d";
+            let current_cases_date = format_date(dateObj);
 
+            let key_value = value["properties"]["STATE"] + value["properties"]["COUNTY"];
+
+            if(check_average_valid(current_death_date, week_one_second_death, week_one_first_death, week_two_second_death, week_two_first_death, key_value))
+            {
+                let week_one_deaths = county_dict[key_value]["properties"][week_one_second_death] - county_dict[key]["properties"][week_one_first_death];
+                let week_two_deaths = county_dict[key_value]["properties"][week_two_second_death] - county_dict[key]["properties"][week_two_first_death];
+
+                let week_one_cases = county_dict[key_value]["properties"][week_one_second_cases] - county_dict[key]["properties"][week_one_first_cases];
+                let week_two_cases = county_dict[key_value]["properties"][week_two_second_cases] - county_dict[key]["properties"][week_two_first_cases];
+
+                let seven_day_deaths = week_one_deaths/week_two_deaths;
+                let seven_day_cases = week_one_cases/week_two_cases;
+
+                if(week_two_deaths === 0)
+                {
+                    seven_day_deaths = 0;
+                }
+
+                if(week_two_cases === 0)
+                {
+                    seven_day_cases = 0;
+                }
+                
+                seven_day_deaths = parseFloat(seven_day_deaths.toFixed(3));
+                seven_day_cases = parseFloat(seven_day_cases.toFixed(3));
+
+                value["properties"][current_death_date] = seven_day_deaths;
+                value["properties"][current_cases_date] = seven_day_cases;
+            }
         }
     }
+}
+
+//=====================================================================
+
+function write_file_average_cases_deaths()
+{
+    let features = [];
+  
+    for (let [key, value] of Object.entries(moving_average_dict)) {
+      features.push(value);
+    }
+  
+    let jsonWrite = {
+      type: "FeatureCollection",
+      features: features
+    };
+  
+    let data = JSON.stringify(jsonWrite);
+  
+    fs.writeFileSync("../final_data/counties-average.geojson", data);
+
+    console.log("Finish writing average for deaths and cases")
 }
 
 function main()
@@ -257,7 +325,11 @@ function main()
 
     hard_clone_obj();
 
+    //console.log(moving_average_dict["10001"])
+
     calculate_seven_day_average()
+
+    write_file_average_cases_deaths()
 }
 
 main()

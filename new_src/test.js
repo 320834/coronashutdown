@@ -37,3 +37,5 @@ console.log(week_one_first)
 
 console.log(week_two_second)
 console.log(week_two_first)
+
+console.log(0/0)
