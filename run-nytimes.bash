@@ -11,6 +11,7 @@ git pull
 cd /home/panda/Desktop/Repository/coronashutdown/new_src
 node pull_data.js
 node merge_nytimes.js
+node moving-average.js
 node create-state-csv.js
 
 cd ..
@@ -25,6 +26,7 @@ cp ~/Desktop/Repository/coronashutdown/final_data/counties-cases.geojson ~/Deskt
 cp ~/Desktop/Repository/coronashutdown/final_data/counties-per-capita-cases.geojson ~/Desktop/Repository/Geojson_data
 cp ~/Desktop/Repository/coronashutdown/final_data/counties-per-sqm-cases.geojson ~/Desktop/Repository/Geojson_data
 cp ~/Desktop/Repository/coronashutdown/final_data/counties-mortality.geojson ~/Desktop/Repository/Geojson_data
+cp ~/Desktop/Repository/coronashutdown/final_data/counties-average.geojson ~/Desktop/Repository/Geojson_data
 cp ~/Desktop/Repository/coronashutdown/final_data/state_confirmation_deaths.json ~/Desktop/Repository/Geojson_data
 
 cd /home/panda/Desktop/Repository/Geojson_data
