@@ -570,7 +570,7 @@ function write_file_capita()
     //fs.writeFileSync("../debug_data/counties-mortality.json", data);
     fs.writeFileSync("../final_data/counties-per-capita-cases.geojson", data);
 
-    console.log("Finish writing mortality")
+    console.log("Finish writing capita")
 }
 
 function write_file_mortality()
