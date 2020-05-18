@@ -232,7 +232,60 @@ function check_average_valid(curr, week_one_first, week_one_second, week_two_fir
     return false;
 }
 
-function calculate_seven_day_average()
+/**
+ * Calculates the seven day average given a start and end date
+ * @param {string} key The county to calculate average from
+ * @param {Date} start 
+ * @param {Date} end 
+ * @param {Number} flag Indicate if the cases or deaths, cases = 0, deaths = 1
+ */
+function calculate_seven_day_average(key, start, end, flag)
+{
+    let sum = 0;
+
+    if(flag == 0)
+    {
+        let days = Math.floor((end - start) / 1000 / 60 / 60 / 24);
+        
+        for(var i = 0; i < days; i++)
+        {
+            let millitime = start.getTime() + 86400000 * i;
+            let curr_date = format_date(new Date(millitime));
+
+            // console.log(county_dict[key]["properties"][curr_date])
+            sum += county_dict[key]["properties"][curr_date];
+        }
+
+        // console.log();
+        // console.log(days);
+        // console.log(sum/days);
+
+        return sum/days;
+    }
+    else
+    {
+        //For deaths
+
+        let days = Math.floor((end - start) / 1000 / 60 / 60 / 24);
+        
+        for(var i = 0; i < days; i++)
+        {
+            let millitime = start.getTime() + 86400000 * i;
+            let curr_date = format_date(new Date(millitime));
+
+            // console.log(county_dict[key]["properties"][curr_date + ".d"])
+            sum += county_dict[key]["properties"][curr_date + ".d"];
+        }
+
+        // console.log();
+        // console.log(days);
+        // console.log(sum/days);
+
+        return sum/days;
+    }
+}
+
+function loop_seven_day_average()
 {
     let missing = {};
 
@@ -245,44 +298,40 @@ function calculate_seven_day_average()
             let millitime = start_date.getTime() + 86400000 * i;
             let dateObj = new Date(millitime);
             
-            let week_one_second_death = format_date(new Date(millitime - 86400000)) + ".d";
-            let week_one_second_cases = format_date(new Date(millitime - 86400000));
+            let week_one_end = format_date(new Date(millitime));
 
-            let week_one_first_death = format_date(new Date(millitime - 7 * 86400000)) + ".d";
-            let week_one_first_cases = format_date(new Date(millitime - 7 * 86400000));
+            let week_one_start = format_date(new Date(millitime - 7 * 86400000));
 
-            let week_two_second_death = format_date(new Date(millitime - 8 * 86400000)) + ".d";
-            let week_two_second_cases = format_date(new Date(millitime - 8 * 86400000));
+            let week_two_end = format_date(new Date(millitime - 8 * 86400000));
 
-            let week_two_first_death = format_date(new Date(millitime - 14 * 86400000)) + ".d";
-            let week_two_first_cases = format_date(new Date(millitime - 14 * 86400000));
+            let week_two_start = format_date(new Date(millitime - 14 * 86400000));
 
             let current_death_date = format_date(dateObj) + ".d";
             let current_cases_date = format_date(dateObj);
 
             let key_value = value["properties"]["STATE"] + value["properties"]["COUNTY"];
 
-            if(check_average_valid(current_death_date, week_one_second_death, week_one_first_death, week_two_second_death, week_two_first_death, key_value))
+            if(check_average_valid(current_death_date, week_one_end, week_one_start, week_two_end, week_two_start, key_value))
             {
-                let week_one_deaths = county_dict[key_value]["properties"][week_one_second_death] - county_dict[key]["properties"][week_one_first_death];
-                let week_two_deaths = county_dict[key_value]["properties"][week_two_second_death] - county_dict[key]["properties"][week_two_first_death];
+                let one_week_cases = calculate_seven_day_average(key_value, week_one_start, week_one_end, 0);
+                let two_week_cases = calculate_seven_day_average(key_value, week_two_start, week_two_end, 0);
 
-                let week_one_cases = county_dict[key_value]["properties"][week_one_second_cases] - county_dict[key]["properties"][week_one_first_cases];
-                let week_two_cases = county_dict[key_value]["properties"][week_two_second_cases] - county_dict[key]["properties"][week_two_first_cases];
+                let one_week_deaths = calculate_seven_day_average(key_value, week_one_start, week_one_end, 1);
+                let two_week_deaths = calculate_seven_day_average(key_value, week_two_start, week_two_end, 1);
 
-                let seven_day_deaths = week_one_deaths/week_two_deaths;
-                let seven_day_cases = week_one_cases/week_two_cases;
+                let seven_day_cases = (one_week_cases - two_week_cases)/two_week_cases;
+                let seven_day_deaths = (one_week_deaths - two_week_deaths)/(two_week_deaths);
 
-                if(week_two_deaths === 0)
+                if(two_week_cases === 0)
+                {
+                    seven_day_cases = 0
+                }
+
+                if(two_week_deaths === 0)
                 {
                     seven_day_deaths = 0;
                 }
 
-                if(week_two_cases === 0)
-                {
-                    seven_day_cases = 0;
-                }
-                
                 seven_day_deaths = parseFloat(seven_day_deaths.toFixed(3));
                 seven_day_cases = parseFloat(seven_day_cases.toFixed(3));
 
@@ -327,9 +376,13 @@ function main()
 
     //console.log(moving_average_dict["10001"])
 
-    calculate_seven_day_average()
+    loop_seven_day_average()
 
     write_file_average_cases_deaths()
+
+    //calculate_seven_day_average("10001", new Date("04/30/2020"), new Date("05/07/2020"), 0)
+
+
 }
 
 main()
