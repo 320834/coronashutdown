@@ -279,7 +279,7 @@ function calculate_seven_day_average(key, start, end, flag)
 
         let days = Math.floor((end - start) / 1000 / 60 / 60 / 24);
 
-        console.log(days)
+        //console.log(days)
         
         for(var i = 0; i < days; i++)
         {
