@@ -302,9 +302,9 @@ function loop_seven_day_average()
 
             let week_one_start = format_date(new Date(millitime - 7 * 86400000));
 
-            let week_two_end = format_date(new Date(millitime - 8 * 86400000));
+            let week_two_end = format_date(new Date(millitime - 1 * 86400000));
 
-            let week_two_start = format_date(new Date(millitime - 14 * 86400000));
+            let week_two_start = format_date(new Date(millitime - 8 * 86400000));
 
             let current_death_date = format_date(dateObj) + ".d";
             let current_cases_date = format_date(dateObj);
