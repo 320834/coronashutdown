@@ -1,0 +1,19 @@
+{
+  "name": "coronashutdown",
+  "version": "1.0.0",
+  "description": "A repo for pulling county level coronavirus cases and deaths. Also aggregates the data to a geojson format for map on site.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/320834/coronashutdown.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/320834/coronashutdown/issues"
+  },
+  "homepage": "https://github.com/320834/coronashutdown#readme"
+}
