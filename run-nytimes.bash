@@ -20,7 +20,7 @@ git add .
 git commit -m "new data"
 git push
 
-#Move files to update map
+#Move files to update map.
 cd 
 cp ~/Desktop/Repository/coronashutdown/final_data/counties-cases.geojson ~/Desktop/Repository/Geojson_data
 cp ~/Desktop/Repository/coronashutdown/final_data/counties-per-capita-cases.geojson ~/Desktop/Repository/Geojson_data
