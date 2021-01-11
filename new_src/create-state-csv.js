@@ -117,6 +117,8 @@ function parse_cases_for_state()
     {
         let obj = json_cases[i];
 
+        
+
         let key_date = format_date(new Date(obj["date"]));
         let state = obj["state"];
 
@@ -126,13 +128,33 @@ function parse_cases_for_state()
             state = "District Of Columbia"
         }
 
+        let deathCount = 0;
+        let caseCount = 0;
+
+        
+
+        try {
+            deathCount = parseInt(obj["deaths"]) ? parseInt(obj["deaths"]) : 0;
+            caseCount = parseInt(obj["cases"]) ? parseInt(obj["cases"]) : 0;
+        }
+        catch(e)
+        {
+            console.log("Error Here")
+        }
+
         if(state_list[state] != undefined)
         {
-            state_list[state]["death"][key_date] += parseInt(obj["deaths"]);
-            state_list[state]["confirmed"][key_date] += parseInt(obj["cases"]);
+            // state_list[state]["death"][key_date] += parseInt(obj["deaths"]);
+            // state_list[state]["confirmed"][key_date] += parseInt(obj["cases"]);
 
-            state_list["U.S Total"]["death"][key_date] += parseInt(obj["deaths"]);
-            state_list["U.S Total"]["confirmed"][key_date] += parseInt(obj["cases"]);
+            // state_list["U.S Total"]["death"][key_date] += parseInt(obj["deaths"]);
+            // state_list["U.S Total"]["confirmed"][key_date] += parseInt(obj["cases"]);
+
+            state_list[state]["death"][key_date] += deathCount;
+            state_list[state]["confirmed"][key_date] += caseCount;
+
+            state_list["U.S Total"]["death"][key_date] += deathCount;
+            state_list["U.S Total"]["confirmed"][key_date] += caseCount;
         }
         else
         {
